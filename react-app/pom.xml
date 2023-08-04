@@ -55,6 +55,9 @@
                         <configuration>
                             <arguments>run build</arguments>
                             <workingDirectory>src</workingDirectory>
+                            <environmentVariables>
+                                <CI>false</CI>
+                            </environmentVariables>
                         </configuration>
                         <phase>process-resources</phase>
                     </execution>
