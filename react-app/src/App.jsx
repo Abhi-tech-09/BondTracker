@@ -1,10 +1,12 @@
 import React from "react";
+import Routes from "./Router/Routes";
+import { AppProvider } from "./AppContext/AppContext";
 
 const App = () => {
   return (
-    <>
-      <h1 className="text-4xl underline">Let the fun begin !!</h1>
-    </>
+    <AppProvider>
+      <Routes />
+    </AppProvider>
   );
 };
 
