@@ -86,8 +86,10 @@ public class DbInit implements CommandLineRunner {
             //create counterparty
             CounterParty counterParty = new CounterParty("counterParty-"+i);
             counterParty = counterPartyRepository.save(counterParty);
+            
+            LocalDate tradeDate = RandomDateGenerator.randomDate();
 
-            Trade trade = new Trade("Trade-"+i,counterParty,security);
+            Trade trade = new Trade(counterParty,security, i+2, i*1000, tradeDate, tradeDate);
             tradeRepository.save(trade);
         }
     }
