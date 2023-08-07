@@ -42,6 +42,10 @@ public class DbInit implements CommandLineRunner {
         Book book1 = new Book();
         Book book2 = new Book();
         Book book3 = new Book();
+        bookRepository.save(book1);
+        bookRepository.save(book2);
+        bookRepository.save(book3);
+
 
         /*
         *   Below example
@@ -58,23 +62,6 @@ public class DbInit implements CommandLineRunner {
         * */
 
 
-        
-
-        //add users in books
-        List<BookUser> tempVarBookUserList = book1.bookUserList;
-        tempVarBookUserList.add(bookUser1);
-        tempVarBookUserList.add(bookUser2);
-        bookRepository.save(book1);
-
-        tempVarBookUserList = book2.bookUserList;
-        tempVarBookUserList.add(bookUser1);
-        bookRepository.save(book2);
-
-        tempVarBookUserList = book3.bookUserList;
-        tempVarBookUserList.add(bookUser2);
-        bookRepository.save(book3);
-        
-        
       //add books in users
         List<Book> tempVarBookList = bookUser1.bookList;
         tempVarBookList.add(book1);

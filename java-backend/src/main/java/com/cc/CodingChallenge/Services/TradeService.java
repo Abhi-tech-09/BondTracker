@@ -20,7 +20,6 @@ public class TradeService {
     //TODO REMOVE BELOW
     public void createDummy(){
         Security security = new Security();
-        security.name = "sec1";
         security = securityRepository.save(security);
         Trade trade = new Trade();
         trade.name = "trade1";
