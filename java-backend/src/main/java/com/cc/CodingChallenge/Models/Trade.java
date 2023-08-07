@@ -12,8 +12,6 @@ public class Trade {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     public int id;
-
-    public String name;
     
     //add many to one relation with book
     
@@ -31,9 +29,9 @@ public class Trade {
     
     public Constants.BuySell buySell;
     
-    LocalDate tradeDate;
+    public LocalDate tradeDate;
     
-    LocalDate settlementDate;
+    public LocalDate settlementDate;
 
     public Trade(){}
 
