@@ -15,14 +15,15 @@ public class Book {
 
     public String name;
 
-//    @OneToMany
-//    public List<Trade> tradeList;
+    @OneToMany
+    public List<Trade> tradeList;
 
     @ManyToMany(mappedBy = "bookList")
     @JsonIgnore
     public List<BookUser> bookUserList;
     public Book(){
         this.bookUserList = new ArrayList<>();
+        this.tradeList = new ArrayList<>();
     }
 
 }

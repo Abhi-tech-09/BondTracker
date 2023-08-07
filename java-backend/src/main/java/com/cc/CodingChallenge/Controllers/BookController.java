@@ -10,7 +10,7 @@ import java.util.List;
 @RequestMapping("user")
 @CrossOrigin(origins = "*")
 public class BookController{
-    @GetMapping("/manager")
+    @GetMapping("/books")
     public List<Book> getAllBooks() {
         return BookService.findAll();
     }

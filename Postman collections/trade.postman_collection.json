@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "f7460b6c-0f99-49d6-a8b5-c9f3e96b28ae",
+		"name": "trade",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28993130"
+	},
+	"item": [
+		{
+			"name": "createTrade",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "trade object",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"name\": null,\r\n        \"counterParty\": {\r\n            \"id\": 5,\r\n            \"name\": \"counterParty-0\"\r\n        },\r\n        \"security\": {\r\n            \"id\": 5,\r\n            \"isin\": \"ISIN-0\",\r\n            \"cusip\": \"CUSIP-0\",\r\n            \"issuer\": \"issuer-0\",\r\n            \"maturityDate\": \"2024-06-18\",\r\n            \"coupon\": 5,\r\n            \"faceValue\": 0,\r\n            \"securityType\": \"CORPORATE\",\r\n            \"securityStatus\": \"LIVE\"\r\n        },\r\n        \"quantity\": 2,\r\n        \"tradeStatus\": \"ACTIVE\",\r\n        \"price\": 0,\r\n        \"buySell\": \"BUY\"\r\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/trade/trades",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trade",
+						"trades"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateTrade",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"id\": 6,\r\n        \"counterParty\": {\r\n            \"id\": 5,\r\n            \"name\": \"counterParty-0\"\r\n        },\r\n        \"security\": {\r\n            \"id\": 4,\r\n            \"isin\": \"ISIN-0\",\r\n            \"cusip\": \"CUSIP-0\",\r\n            \"issuer\": \"issuer-0\",\r\n            \"maturityDate\": \"2023-12-19\",\r\n            \"coupon\": 5,\r\n            \"faceValue\": 0,\r\n            \"securityType\": \"CORPORATE\",\r\n            \"securityStatus\": \"LIVE\"\r\n        },\r\n        \"quantity\": 8,\r\n        \"tradeStatus\": \"ACTIVE\",\r\n        \"price\": 800,\r\n        \"buySell\": \"BUY\",\r\n        \"tradeDate\": \"2024-04-17\",\r\n        \"settlementDate\": \"2024-04-17\"\r\n    }"
+				},
+				"url": {
+					"raw": "localhost:8080/trade/updateTrade",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trade",
+						"updateTrade"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/trade/trades",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trade",
+						"trades"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getTradeOfSecurity",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/trade/tradeOfSecurity/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"trade",
+						"tradeOfSecurity",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
