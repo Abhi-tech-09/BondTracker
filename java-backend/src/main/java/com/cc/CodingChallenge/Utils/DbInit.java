@@ -7,6 +7,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.cc.CodingChallenge.Utils.RandomDateGenerator;
@@ -30,6 +32,7 @@ public class DbInit implements CommandLineRunner {
     @Autowired
     BookUserRepository bookUserRepository;
 
+
     @Override
     public void run(String... args) throws Exception {
         //create book user
@@ -37,11 +40,19 @@ public class DbInit implements CommandLineRunner {
         bookUser1.userName = "user1";
         BookUser bookUser2 = new BookUser();
         bookUser2.userName = "user2";
+        BookUser bookUser3 = new BookUser();
+        bookUser3.userName = "user3";
 
         //create books
         Book book1 = new Book();
+        book1.name = "book1";
+        book1.bookUserList = new ArrayList<>(Arrays.asList(bookUser1, bookUser2));
         Book book2 = new Book();
+        book2.name = "book2";
+        book2.bookUserList = new ArrayList<>(Arrays.asList(bookUser2, bookUser3));
         Book book3 = new Book();
+        book3.name = "book3";
+
         bookRepository.save(book1);
         bookRepository.save(book2);
         bookRepository.save(book3);
