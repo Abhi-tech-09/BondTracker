@@ -84,6 +84,7 @@ public class DbInit implements CommandLineRunner {
         tempVarBookList.add(book3);
         bookUserRepository.save(bookUser2);
 
+        bookUserRepository.save(bookUser3);
 
 
         //create trade
@@ -102,6 +103,14 @@ public class DbInit implements CommandLineRunner {
 
             Trade trade = new Trade(counterParty,security, i+2, i*1000, tradeDate, tradeDate);
             tradeRepository.save(trade);
+            if(i%2==0){
+                book1.tradeList.add(trade);
+            }
+            else{
+                book2.tradeList.add(trade);
+            }
         }
+        bookRepository.save(book1);
+        bookRepository.save(book2);
     }
 }
