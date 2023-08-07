@@ -1,7 +1,66 @@
+import { useState } from "react";
 import React from "react";
 import { useTable, useFilters, useGlobalFilter } from "react-table";
 
-function Bonds() {
+const OriginalTable = ({ rows, setselectedBonds }) => {
+  return (
+    <div className="overflow-x-auto">
+      {" "}
+      <table className="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Id</th>
+            <th>ISIN</th>
+            <th>CUSIN</th>
+            <th>Issuer</th>
+            <th>Maturity Date</th>
+            <th>Coupon</th>
+            <th>Type</th>
+            <th>Face Value</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((bond) => (
+            <tr key={bond.Id}>
+              <th>
+                <label>
+                  <input
+                    type="checkbox"
+                    className="checkbox"
+                    onChange={() => {
+                      setselectedBonds((bondList) => {
+                        const index = bondList.indexOf(bond);
+                        if (index === -1) {
+                          return [...bondList, bond];
+                        } else {
+                          bondList.splice(index, 1);
+                          return [...bondList];
+                        }
+                      });
+                    }}
+                  />
+                </label>
+              </th>
+              <td>{bond.Id}</td>
+              <td>{bond.ISIN}</td>
+              <td>{bond.CUSIN}</td>
+              <td>{bond.Issuer}</td>
+              <td>{bond.maturityDate}</td>
+              <td>{bond.coupon}</td>
+              <td>{bond.type}</td>
+              <td>{bond.faceValue}</td>
+              <td>{bond.status}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+function Bonds({ setbondList }) {
   const dummyBonds = [
     {
       Id: 1,
@@ -114,6 +173,9 @@ function Bonds() {
       status: "Active",
     },
   ];
+  const [orgRows, setRows] = useState(dummyBonds);
+  const [filter, setFilter] = useState(false);
+  const [selectedBonds, setselectedBonds] = useState([]);
   const columns = React.useMemo(
     () => [
       { Header: "Id", accessor: "Id" },
@@ -149,84 +211,80 @@ function Bonds() {
   );
 
   return (
-    // <div className="overflow-x-auto">
-    //   {" "}
-    //   <table className="table">
-    //     <thead>
-    //       <tr>
-    //         <th></th>
-    //         <th>Id</th>
-    //         <th>ISIN</th>
-    //         <th>CUSIN</th>
-    //         <th>Issuer</th>
-    //         <th>Maturity Date</th>
-    //         <th>Coupon</th>
-    //         <th>Type</th>
-    //         <th>Face Value</th>
-    //         <th>Status</th>
-    //       </tr>
-    //     </thead>
-    //     <tbody>
-    //       {bonds.map((bond) => (
-    //         <tr key={bond.Id}>
-    //           <th>
-    //             <label>
-    //               <input type="checkbox" className="checkbox" />
-    //             </label>
-    //           </th>
-    //           <td>{bond.Id}</td>
-    //           <td>{bond.ISIN}</td>
-    //           <td>{bond.CUSIN}</td>
-    //           <td>{bond.Issuer}</td>
-    //           <td>{bond.maturityDate}</td>
-    //           <td>{bond.coupon}</td>
-    //           <td>{bond.type}</td>
-    //           <td>{bond.faceValue}</td>
-    //           <td>{bond.status}</td>
-    //         </tr>
-    //       ))}
-    //     </tbody>
-    //   </table>
-    // </div>
-    <div className="overflow-x-auto px-2 space-y-2">
-      <input
-        type="text"
-        placeholder="Search any bonds..."
-        value={globalFilter || ""}
-        onChange={(e) => setGlobalFilter(e.target.value)}
-        className="input input-bordered input-error w-full max-w-xs m-2"
-      />
-      <table {...getTableProps()} className="table">
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              <th></th>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                <th>
-                  <label>
-                    <input type="checkbox" className="checkbox" />
-                  </label>
-                </th>
-                {row.cells.map((cell) => {
-                  return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                  );
-                })}
+    <div className="pt-4 overflow-x-auto px-2 space-y-2">
+      <div className="flex space-x-2">
+        {filter ? (
+          <input
+            type="text"
+            placeholder="Search any bonds..."
+            value={globalFilter || ""}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            className="input input-bordered input-accent w-full max-w-xs m-2"
+          />
+        ) : (
+          <button
+            className="btn btn-outline btn-accent"
+            onClick={() => setFilter(true)}
+          >
+            Activate Global Filter
+          </button>
+        )}
+        <button className="btn btn-accent">Show Risky bonds</button>
+        <button
+          className="btn btn-success"
+          onClick={() =>
+            setbondList((bondList) => {
+              let newBondList = bondList;
+              selectedBonds.forEach((selectedBond) => {
+                const index = bondList.indexOf(selectedBond);
+                if (index === -1) {
+                  newBondList.push(selectedBond);
+                }
+              });
+              return [...newBondList];
+            })
+          }
+        >
+          Track bonds
+        </button>
+      </div>
+      {filter ? (
+        <table {...getTableProps()} className="table">
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                <th></th>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render("Header")}
+                  </th>
+                ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  <th>
+                    <label>
+                      <input type="checkbox" className="checkbox" />
+                    </label>
+                  </th>
+                  {row.cells.map((cell) => {
+                    return (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <OriginalTable rows={orgRows} setselectedBonds={setselectedBonds} />
+      )}
     </div>
   );
 }

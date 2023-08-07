@@ -223,19 +223,38 @@ function Trades({ setBonds }) {
       },
     },
   ];
+  const [trades, setTrades] = useState(dummyTrades);
   const [select, setSelect] = useState(-1);
   return (
     <div className="container py-6">
-      <div className="overflow-x-auto mx-6 border border-gray-500">
+      <button className="btn btn-outline btn-info mx-6 my-2" onClick={() => 
+        setTrades([...dummyTrades.sort((a, b) => new Date(b.tradeDate) - new Date(a.tradeDate))])
+      }>
+        Show Recent Trades
+      </button>
+      <div className="overflow-x-auto mx-6">
         <table className="table table-zebra">
-          {/* head */}
           <thead>
             <tr>
               <th>Id</th>
               <th>CounterpartyId</th>
               <th>SecurityId</th>
               <th>Quantity</th>
-              <th>Status</th>
+              <th className="flex flex-col justify-center">
+                <div>Status</div>
+                <select className="p-2 bg-white border ">
+                  <option disabled selected>
+                    select status
+                  </option>
+                  <option onClick={() => {
+                    setTrades(dummyTrades.filter(trade => trade.Status === "Pending"))
+                  }}>Pending</option>
+                  <option onClick={() => {
+                    setTrades(dummyTrades.filter(trade => trade.Status === "Completed"))}
+                  }>Completed</option>
+                  <option onClick={() => setTrades(dummyTrades)}>All</option>
+                </select>
+              </th>
               <th>Price</th>
               <th>Buy_sell</th>
               <th>tradeDate</th>
@@ -243,7 +262,7 @@ function Trades({ setBonds }) {
             </tr>
           </thead>
           <tbody>
-            {dummyTrades.map((trade, index) => (
+            {trades.map((trade, index) => (
               <tr
                 key={trade.Id}
                 className={`hover:!bg-blue-200 ${
