@@ -19,4 +19,9 @@ public final class Constants {
         GOVERNMENT,
         AGENCY
     }
+    
+    public static enum BuySell {
+    	BUY,
+    	SELL
+    }
 }
