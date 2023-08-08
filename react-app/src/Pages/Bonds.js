@@ -236,7 +236,9 @@ function Bonds({ setbondList }) {
             setbondList((bondList) => {
               let newBondList = bondList;
               selectedBonds.forEach((selectedBond) => {
-                const index = bondList.indexOf(selectedBond);
+                const index = newBondList.indexOf(selectedBond);
+                console.log(newBondList); 
+                console.log(selectedBond)
                 if (index === -1) {
                   newBondList.push(selectedBond);
                 }
@@ -247,6 +249,11 @@ function Bonds({ setbondList }) {
         >
           Track bonds
         </button>
+        <button
+            className="btn btn-outline btn-success"
+          >
+            Trade bonds
+          </button>
       </div>
       {filter ? (
         <table {...getTableProps()} className="table">
@@ -263,13 +270,32 @@ function Bonds({ setbondList }) {
             ))}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
+            {rows.map((row, index) => {
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>
                   <th>
                     <label>
-                      <input type="checkbox" className="checkbox" />
+                      <input
+                        type="checkbox"
+                        className="checkbox"
+                        onChange={() => {
+                          setselectedBonds((bondList) => {
+                            const index = bondList.indexOf(
+                              dummyBonds.find((b) => b.Id === row.values.Id) 
+                            );
+                            if (index === -1) {
+                              return [
+                                ...bondList,
+                                dummyBonds.find((b) => b.Id === row.values.Id),
+                              ];
+                            } else {
+                              bondList.splice(index, 1);
+                              return [...bondList];
+                            }
+                          });
+                        }}
+                      />
                     </label>
                   </th>
                   {row.cells.map((cell) => {
