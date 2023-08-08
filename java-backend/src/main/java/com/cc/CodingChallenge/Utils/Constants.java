@@ -12,6 +12,10 @@ public final class Constants {
         LIVE,
         DEAD
     }
+    public enum Role {
+        ROLE_USER,
+        ROLE_ADMIN
+    }
     
     public static enum SecurityType{
         CORPORATE,

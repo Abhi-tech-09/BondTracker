@@ -2,12 +2,16 @@ package com.cc.CodingChallenge.Controllers;
 
 import com.cc.CodingChallenge.Models.BookUser;
 import com.cc.CodingChallenge.Repositories.BookUserRepository;
+import com.cc.CodingChallenge.Utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("user")
@@ -16,10 +20,30 @@ public class BookUserController {
     @Autowired
     BookUserRepository bookUserRepository;
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody BookUser bookUser, HttpSession httpSession){
+        Optional<BookUser> bookUserOptional = bookUserRepository.findById(bookUser.userName);
+        if(bookUserOptional.isEmpty()){
+            return new ResponseEntity<>("No User found", HttpStatus.NOT_FOUND);
+        }
+        BookUser bookUserObj = bookUserOptional.get();
+        if(Objects.equals(bookUserObj.password, bookUser.password)){
+            httpSession.setAttribute("user", bookUserObj);
+            return new ResponseEntity<>("Login Successful", HttpStatus.OK);
+        }
+        httpSession.setAttribute("user",null);
+        httpSession.invalidate();
+        return new ResponseEntity<>("Invalid Credentials", HttpStatus.UNAUTHORIZED);
+    }
+
     @GetMapping("/users")
-    public List<BookUser> getAllUsers(){
-        List<BookUser> bookUserList = bookUserRepository.findAll();
-        return bookUserList;
+    public ResponseEntity<List<BookUser>> getAllUsers(HttpSession httpSession){
+        BookUser bookUser = (BookUser) httpSession.getAttribute("user");
+        if(bookUser.role == Constants.Role.ROLE_ADMIN){
+            List<BookUser> bookUserList = bookUserRepository.findAll();
+            return new ResponseEntity<>(bookUserList,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
     }
 
 }

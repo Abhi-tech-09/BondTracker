@@ -38,8 +38,12 @@ public class DbInit implements CommandLineRunner {
         //create book user
         BookUser bookUser1 = new BookUser();
         bookUser1.userName = "user1";
+        bookUser1.password = "password";
+        bookUser1.role = Constants.Role.ROLE_USER;
         BookUser bookUser2 = new BookUser();
         bookUser2.userName = "user2";
+        bookUser2.password = "password";
+        bookUser2.role = Constants.Role.ROLE_ADMIN;
         BookUser bookUser3 = new BookUser();
         bookUser3.userName = "user3";
 
