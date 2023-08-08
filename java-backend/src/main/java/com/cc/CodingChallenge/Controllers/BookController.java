@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("book")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookController{
     @GetMapping("/books")
     public List<Book> getAllBooks() {
