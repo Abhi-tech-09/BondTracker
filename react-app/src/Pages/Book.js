@@ -1,52 +1,75 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Trades from "./Trades";
 import Bonds from "./Bonds";
 
-const TrackBonds = ({bonds}) => {
-  const dummyBonds = [
-    {
-      Id: 1,
-      ISIN: "US1234567890",
-      CUSIN: "CUS123456",
-      Issuer: "ABC Corporation",
-      maturityDate: "2023-12-31",
-      coupon: 5.0,
-      type: "Corporate",
-      faceValue: 1000,
-      status: "Active",
-    },
-    {
-      Id: 2,
-      ISIN: "US9876543210",
-      CUSIN: "CUS654321",
-      Issuer: "XYZ Inc.",
-      maturityDate: "2024-06-30",
-      coupon: 4.5,
-      type: "Government",
-      faceValue: 500,
-      status: "Active",
-    },
-  ];
+const dummyBonds = [
+  {
+    Id: 11,
+    ISIN: "US1234567890",
+    CUSIN: "CUS123456",
+    Issuer: "ABC Corporation",
+    maturityDate: "2023-12-31",
+    coupon: 5.0,
+    type: "Corporate",
+    faceValue: 1000,
+    status: "Active",
+  },
+  {
+    Id: 12,
+    ISIN: "US9876543210",
+    CUSIN: "CUS654321",
+    Issuer: "XYZ Inc.",
+    maturityDate: "2024-06-30",
+    coupon: 4.5,
+    type: "Government",
+    faceValue: 500,
+    status: "Active",
+  },
+];
 
+const TrackBonds = ({ bonds }) => {
   return (
     <>
       <h1 className="text-2xl mb-4">Your Bond Track list</h1>
       <div className="space-y-4">
-        {bonds.map((bond) => (
-          <div className="collapse bg-base-200">
-            <input type="checkbox" />
-            <div className="collapse-title text-xl font-medium space-x-2">
-              <div className="badge badge-warning gap-2 text-lg p-4"> 
-                BondId - {bond.Id}
+        {Object.keys(bonds).length !== 0 &&
+          bonds.map((bond) => (
+            <div className="collapse bg-base-200">
+              <input type="checkbox" />
+              <div className="collapse-title text-xl font-medium space-x-2">
+                <div className="badge badge-warning gap-2 text-lg p-4">
+                  BondId - {bond.Id}
+                </div>
+                <div className="badge badge-accent badge-outline">
+                  {bond.type}
+                </div>
+                {/* Open the modal using ID.showModal() method */}
               </div>
-              <div className="badge badge-accent badge-outline">{bond.type}</div>
+              <div className="collapse-content">
+                <p>
+                  <button
+                    className="btn btn-sm btn-outline btn-success"
+                    onClick={() => window.my_modal_1.showModal()}
+                  >
+                    Trade
+                  </button>
+                  <dialog id="my_modal_1" className="modal">
+                    <form method="dialog" className="modal-box">
+                      <h3 className="font-bold text-lg">Hello!</h3>
+                      <p className="py-4">
+                        Press ESC key or click the button below to close
+                      </p>
+                      <div className="modal-action">
+                        {/* if there is a button in form, it will close the modal */}
+                        <button className="btn">Close</button>
+                      </div>
+                    </form>
+                  </dialog>
+                </p>
+              </div>
             </div>
-            <div className="collapse-content">
-              <p>Further details  </p>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
     </>
   );
@@ -55,15 +78,14 @@ const TrackBonds = ({bonds}) => {
 function Book() {
   const { bookId } = useParams();
   const [bond, setBonds] = useState({});
-  const [bondList,setbondList] = useState([]); 
+  const [bondList, setbondList] = useState(dummyBonds);
   useEffect(() => {
-    console.log(bondList)
-  }, [bondList])
-  
+    console.log(bondList);
+  }, [bondList]);
 
   const tabs = [
     { name: "Trades", element: <Trades setBonds={setBonds} /> },
-    { name: "Bonds", element: <Bonds setbondList={setbondList}/> },
+    { name: "Bonds", element: <Bonds setbondList={setbondList} /> },
   ];
   const [tabIndex, settabIndex] = useState(1);
   return (
@@ -142,7 +164,7 @@ function Book() {
             </div>
           )
         ) : (
-          <TrackBonds bonds={bondList}/>
+          <TrackBonds bonds={bondList} />
         )}
       </div>
     </div>
