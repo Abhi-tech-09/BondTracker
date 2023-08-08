@@ -6,7 +6,8 @@ public final class Constants {
         PENDING,
         REJECTED,
         SETTLED,
-        UNSETTLED
+        UNSETTLED,
+        ACTIVE,
     }
     
     public static enum SecurityStatus{
