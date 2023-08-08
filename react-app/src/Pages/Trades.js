@@ -1,229 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-function Trades({ setBonds }) {
-  const dummyTrades = [
-    {
-      Id: 1,
-      BookId: 101,
-      CounterpartyId: 201,
-      SecurityId: 301,
-      Quantity: 100,
-      Status: "Unsettled",
-      Price: 50.75,
-      Buy_sell: "Buy",
-      tradeDate: "2023-08-04",
-      settlementDate: "2023-08-10",
-      bondDetail: {
-        ISIN: "US1234567890",
-        CUSIP: "123456789",
-        issuer: "ABC Corporation",
-        maturityDate: "2025-08-04",
-        Coupon: 4.5,
-        type: "Corporate Bond",
-        faceValue: 1000,
-        Status: "Active",
-      },
-    },
-    {
-      Id: 2,
-      BookId: 102,
-      CounterpartyId: 202,
-      SecurityId: 302,
-      Quantity: 50,
-      Status: "Settled",
-      Price: 75.25,
-      Buy_sell: "Sell",
-      tradeDate: "2023-08-05",
-      settlementDate: "2023-08-12",
-      bondDetail: {
-        ISIN: "US0987654321",
-        CUSIP: "987654321",
-        issuer: "XYZ Corporation",
-        maturityDate: "2024-09-15",
-        Coupon: 3.75,
-        type: "Government Bond",
-        faceValue: 500,
-        Status: "Active",
-      },
-    },
-    {
-      Id: 3,
-      BookId: 103,
-      CounterpartyId: 203,
-      SecurityId: 303,
-      Quantity: 200,
-      Status: "Settled",
-      Price: 30.5,
-      Buy_sell: "Buy",
-      tradeDate: "2023-08-06",
-      settlementDate: "2023-08-11",
-      bondDetail: {
-        ISIN: "US5678901234",
-        CUSIP: "567890123",
-        issuer: "LMN Corporation",
-        maturityDate: "2023-10-20",
-        Coupon: 5.25,
-        type: "Municipal Bond",
-        faceValue: 750,
-        Status: "Active",
-      },
-    },
-    {
-      Id: 4,
-      BookId: 101,
-      CounterpartyId: 204,
-      SecurityId: 304,
-      Quantity: 150,
-      Status: "Pending",
-      Price: 60.0,
-      Buy_sell: "Sell",
-      tradeDate: "2023-08-07",
-      settlementDate: "2023-08-13",
-      bondDetail: {
-        ISIN: "US2345678901",
-        CUSIP: "234567890",
-        issuer: "PQR Corporation",
-        maturityDate: "2026-03-15",
-        Coupon: 3.0,
-        type: "Corporate Bond",
-        faceValue: 800,
-        Status: "Active",
-      },
-    },
-    {
-      Id: 5,
-      BookId: 102,
-      CounterpartyId: 205,
-      SecurityId: 305,
-      Quantity: 75,
-      Status: "Rejected",
-      Price: 45.25,
-      Buy_sell: "Buy",
-      tradeDate: "2023-08-08",
-      settlementDate: "2023-08-14",
-      bondDetail: {
-        ISIN: "US3456789012",
-        CUSIP: "345678901",
-        issuer: "LMN Corporation",
-        maturityDate: "2027-05-10",
-        Coupon: 4.0,
-        type: "Government Bond",
-        faceValue: 1200,
-        Status: "Active",
-      },
-    },
-    {
-      Id: 6,
-      BookId: 103,
-      CounterpartyId: 206,
-      SecurityId: 306,
-      Quantity: 300,
-      Status: "Settled",
-      Price: 55.75,
-      Buy_sell: "Sell",
-      tradeDate: "2023-08-09",
-      settlementDate: "2023-08-15",
-      bondDetail: {
-        ISIN: "US4567890123",
-        CUSIP: "456789012",
-        issuer: "ABC Corporation",
-        maturityDate: "2024-12-01",
-        Coupon: 4.25,
-        type: "Municipal Bond",
-        faceValue: 900,
-        Status: "Active",
-      },
-    },
-    {
-      Id: 7,
-      BookId: 101,
-      CounterpartyId: 207,
-      SecurityId: 307,
-      Quantity: 250,
-      Status: "Pending",
-      Price: 40.5,
-      Buy_sell: "Buy",
-      tradeDate: "2023-08-10",
-      settlementDate: "2023-08-16",
-      bondDetail: {
-        ISIN: "US5678901234",
-        CUSIP: "567890123",
-        issuer: "XYZ Corporation",
-        maturityDate: "2026-06-22",
-        Coupon: 3.5,
-        type: "Corporate Bond",
-        faceValue: 1500,
-        Status: "Active",
-      },
-    },
-    {
-      Id: 8,
-      BookId: 102,
-      CounterpartyId: 208,
-      SecurityId: 308,
-      Quantity: 120,
-      Status: "Unsettled",
-      Price: 70.25,
-      Buy_sell: "Sell",
-      tradeDate: "2023-08-11",
-      settlementDate: "2023-08-17",
-      bondDetail: {
-        ISIN: "US6789012345",
-        CUSIP: "678901234",
-        issuer: "PQR Corporation",
-        maturityDate: "2025-09-30",
-        Coupon: 4.75,
-        type: "Government Bond",
-        faceValue: 1100,
-        Status: "Active",
-      },
-    },
-    {
-      Id: 9,
-      BookId: 103,
-      CounterpartyId: 209,
-      SecurityId: 309,
-      Quantity: 180,
-      Status: "Settled",
-      Price: 65.75,
-      Buy_sell: "Buy",
-      tradeDate: "2023-08-12",
-      settlementDate: "2023-08-18",
-      bondDetail: {
-        ISIN: "US7890123456",
-        CUSIP: "789012345",
-        issuer: "LMN Corporation",
-        maturityDate: "2024-11-11",
-        Coupon: 4.0,
-        type: "Municipal Bond",
-        faceValue: 800,
-        Status: "Active",
-      },
-    },
-    {
-      Id: 10,
-      BookId: 101,
-      CounterpartyId: 210,
-      SecurityId: 310,
-      Quantity: 90,
-      Status: "Rejected",
-      Price: 80.0,
-      Buy_sell: "Sell",
-      tradeDate: "2023-08-13",
-      settlementDate: "2023-08-19",
-      bondDetail: {
-        ISIN: "US8901234567",
-        CUSIP: "890123456",
-        issuer: "ABC Corporation",
-        maturityDate: "2025-07-07",
-        Coupon: 4.25,
-        type: "Government Bond",
-        faceValue: 1300,
-        Status: "Active",
-      },
-    },
-  ];
-  const [trades, setTrades] = useState(dummyTrades);
+function Trades({ trades, setBonds }) {
+  const [tradeList, setTradeList] = useState(trades);
+  // useEffect(async () => {
+  //   axios.defaults.withCredentials = true;
+
+  //   const bondsData = await axios
+  //     .get("http://localhost:8080/security/allSecurities")
+  //     .catch((error) => {
+  //       if (error.response && error.response.status == 401) {
+  //         console.log("You are not authorised. Need to login first. ");
+  //       }
+  //     });
+  //   // se([...dummyBonds, ...bondsData?.data]);
+  // }, []);
   const [select, setSelect] = useState(-1);
   return (
     <div className="container pt-4 border h-[40rem]">
@@ -231,8 +22,8 @@ function Trades({ setBonds }) {
         <button
           className="btn btn-outline btn-info"
           onClick={() =>
-            setTrades([
-              ...dummyTrades.sort(
+            setTradeList([
+              ...tradeList.sort(
                 (a, b) => new Date(b.tradeDate) - new Date(a.tradeDate)
               ),
             ])
@@ -242,25 +33,13 @@ function Trades({ setBonds }) {
         </button>
         <button
           className="btn btn-success mx-6 mb-2"
-          onClick={() =>
-            setTrades([
-              ...dummyTrades.sort(
-                (a, b) => new Date(b.tradeDate) - new Date(a.tradeDate)
-              ),
-            ])
-          }
+          
         >
           Settle
         </button>
         <button
           className="btn btn-error mx-6 mb-2"
-          onClick={() =>
-            setTrades([
-              ...dummyTrades.sort(
-                (a, b) => new Date(b.tradeDate) - new Date(a.tradeDate)
-              ),
-            ])
-          }
+          
         >
           Reject
         </button>
@@ -282,8 +61,8 @@ function Trades({ setBonds }) {
                   </option>
                   <option
                     onClick={() => {
-                      setTrades(
-                        dummyTrades.filter(
+                      setTradeList(
+                        trades.filter(
                           (trade) => trade.Status === "Pending"
                         )
                       );
@@ -293,8 +72,8 @@ function Trades({ setBonds }) {
                   </option>
                   <option
                     onClick={() => {
-                      setTrades(
-                        dummyTrades.filter(
+                      setTradeList(
+                        trades.filter(
                           (trade) => trade.Status === "Settled"
                         )
                       );
@@ -304,8 +83,8 @@ function Trades({ setBonds }) {
                   </option>
                   <option
                     onClick={() => {
-                      setTrades(
-                        dummyTrades.filter(
+                      setTradeList(
+                        trades.filter(
                           (trade) => trade.Status === "Unsettled"
                         )
                       );
@@ -315,8 +94,8 @@ function Trades({ setBonds }) {
                   </option>
                   <option
                     onClick={() => {
-                      setTrades(
-                        dummyTrades.filter(
+                      setTradeList(
+                        trades.filter(
                           (trade) => trade.Status === "Rejected"
                         )
                       );
@@ -324,7 +103,7 @@ function Trades({ setBonds }) {
                   >
                     Rejected
                   </option>
-                  <option onClick={() => setTrades(dummyTrades)}>All</option>
+                  <option onClick={() => setTradeList(trades)}>All</option>
                 </select>
               </th>
               <th>Price</th>
@@ -334,7 +113,7 @@ function Trades({ setBonds }) {
             </tr>
           </thead>
           <tbody className="overflow-y-scroll">
-            {trades.map((trade, index) => (
+            {tradeList.map((trade, index) => (
               <tr
                 key={trade.Id}
                 className={` hover:!bg-blue-200 ${

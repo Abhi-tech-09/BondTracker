@@ -7,7 +7,58 @@ function Dashboard() {
   const navigate = useNavigate();
   // Now here I know userId and his role, so need to send a request to backend to fetch which books can this user see.
   // In case if the role is admin, the request on backend will fetch all books and everything will be stored in this books array.
-  const [bookRes, setBookRes] = useState([])
+  const [bookRes, setBookRes] = useState([
+    {
+      id: 1,
+      name: "Financials",
+      bondsContained: 3,
+    },
+    {
+      id: 2,
+      name: "Technology",
+      bondsContained: 2,
+    },
+    {
+      id: 3,
+      name: "Healthcare",
+      bondsContained: 4,
+    },
+    {
+      id: 4,
+      name: "Energy",
+      bondsContained: 1,
+    },
+    {
+      id: 5,
+      name: "Consumer Goods",
+      bondsContained: 5,
+    },
+    {
+      id: 6,
+      name: "Automotive",
+      bondsContained: 2,
+    },
+    {
+      id: 7,
+      name: "Real Estate",
+      bondsContained: 3,
+    },
+    {
+      id: 8,
+      name: "Entertainment",
+      bondsContained: 1,
+    },
+    {
+      id: 9,
+      name: "Telecommunications",
+      bondsContained: 6,
+    },
+    {
+      id: 10,
+      name: "Utilities",
+      bondsContained: 3,
+    },
+  ])
   const [userRes, setUserRes] = useState([])
   const { user } = useAppContext();
   useEffect(()=>{
@@ -23,7 +74,7 @@ function Dashboard() {
       })
       // console.log("Books data")
       // console.log(booksData)
-      setBookRes(booksData?.data)
+      setBookRes([...bookRes,...booksData?.data])
       if(user.role == "ROLE_ADMIN"){
         const usersData = await axios.get('http://localhost:8080/user/users').catch((error)=>{
           if(error.response && error.response.status == 401){
@@ -61,7 +112,7 @@ function Dashboard() {
                       {book.name}
                     </div>
                     <div className="stat-desc">
-                      No. of Bonds - {book.tradeList.length}
+                      No. of Bonds - {5}
                     </div>
                   </div>
                 </div>

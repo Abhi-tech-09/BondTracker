@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios"; 
 
 
-import axios from 'axios';
 import { useAppContext } from "../AppContext/AppContext";
 const users_login_url = "http://localhost:8080/user/";
 
@@ -12,6 +12,19 @@ const LoginForm = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const { user, setUser} = useAppContext();
+
+  // useEffect(() => {
+  //   (async () => {
+  //     axios.defaults.withCredentials = true;
+  //     //below piece of code is to test until login module is integrated
+  //     //this should be removed
+  //     const login = await axios.post("http://localhost:8080/user/login", {
+  //       userName: "user1",
+  //       password: "password",
+  //     });
+  //     console.log(login);
+  //   })();
+  // }, []);
 
   const handleLogin = async () => {
     // Perform authentication logic here

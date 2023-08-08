@@ -4,15 +4,15 @@ import { useTable, useFilters, useGlobalFilter } from "react-table";
 
 const OriginalTable = ({ rows, setselectedBonds }) => {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto overflow-y-scroll mx-6 h-5/6">
       {" "}
       <table className="table">
-        <thead>
+        <thead className="sticky top-0 bg-white">
           <tr>
             <th></th>
             <th>Id</th>
             <th>ISIN</th>
-            <th>CUSIN</th>
+            <th>CUSIP</th>
             <th>Issuer</th>
             <th>Maturity Date</th>
             <th>Coupon</th>
@@ -21,9 +21,9 @@ const OriginalTable = ({ rows, setselectedBonds }) => {
             <th>Status</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="overflow-y-scroll">
           {rows.map((bond) => (
-            <tr key={bond.Id}>
+            <tr key={bond.id}>
               <th>
                 <label>
                   <input
@@ -43,15 +43,15 @@ const OriginalTable = ({ rows, setselectedBonds }) => {
                   />
                 </label>
               </th>
-              <td>{bond.Id}</td>
-              <td>{bond.ISIN}</td>
-              <td>{bond.CUSIN}</td>
-              <td>{bond.Issuer}</td>
+              <td>{bond.id}</td>
+              <td>{bond.isin}</td>
+              <td>{bond.cusip}</td>
+              <td>{bond.issuer}</td>
               <td>{bond.maturityDate}</td>
               <td>{bond.coupon}</td>
-              <td>{bond.type}</td>
+              <td>{bond.securityType}</td>
               <td>{bond.faceValue}</td>
-              <td>{bond.status}</td>
+              <td>{bond.securityStatus}</td>
             </tr>
           ))}
         </tbody>
@@ -60,138 +60,26 @@ const OriginalTable = ({ rows, setselectedBonds }) => {
   );
 };
 
-function Bonds({ setbondList }) {
-  const dummyBonds = [
-    {
-      Id: 1,
-      ISIN: "US1234567890",
-      CUSIN: "CUS123456789",
-      Issuer: "ABC Corporation",
-      maturityDate: "2023-12-31",
-      coupon: 5.25,
-      type: "Government",
-      faceValue: 1000,
-      status: "Active",
-    },
-    {
-      Id: 2,
-      ISIN: "US9876543210",
-      CUSIN: "CUS987654321",
-      Issuer: "XYZ Inc.",
-      maturityDate: "2024-06-30",
-      coupon: 4.75,
-      type: "Corporate",
-      faceValue: 500,
-      status: "Inactive",
-    },
-    {
-      Id: 3,
-      ISIN: "US5678901234",
-      CUSIN: "CUS567890123",
-      Issuer: "PQR Ltd.",
-      maturityDate: "2025-03-15",
-      coupon: 6.0,
-      type: "Municipal",
-      faceValue: 2000,
-      status: "Active",
-    },
-    {
-      Id: 4,
-      ISIN: "US0987654321",
-      CUSIN: "CUS098765432",
-      Issuer: "LMN Group",
-      maturityDate: "2023-09-30",
-      coupon: 4.25,
-      type: "Corporate",
-      faceValue: 750,
-      status: "Active",
-    },
-    {
-      Id: 5,
-      ISIN: "US5432109876",
-      CUSIN: "CUS543210987",
-      Issuer: "UVW Holdings",
-      maturityDate: "2026-05-15",
-      coupon: 3.5,
-      type: "Government",
-      faceValue: 1500,
-      status: "Inactive",
-    },
-    {
-      Id: 6,
-      ISIN: "US6789012345",
-      CUSIN: "CUS678901234",
-      Issuer: "XYZ Inc.",
-      maturityDate: "2024-11-30",
-      coupon: 5.0,
-      type: "Corporate",
-      faceValue: 1000,
-      status: "Active",
-    },
-    {
-      Id: 7,
-      ISIN: "US3456789012",
-      CUSIN: "CUS345678901",
-      Issuer: "ABC Corporation",
-      maturityDate: "2025-07-31",
-      coupon: 4.0,
-      type: "Municipal",
-      faceValue: 2500,
-      status: "Active",
-    },
-    {
-      Id: 8,
-      ISIN: "US5678901234",
-      CUSIN: "CUS567890123",
-      Issuer: "PQR Ltd.",
-      maturityDate: "2023-10-15",
-      coupon: 4.75,
-      type: "Government",
-      faceValue: 500,
-      status: "Inactive",
-    },
-    {
-      Id: 9,
-      ISIN: "US9012345678",
-      CUSIN: "CUS901234567",
-      Issuer: "LMN Group",
-      maturityDate: "2026-02-28",
-      coupon: 3.25,
-      type: "Corporate",
-      faceValue: 1250,
-      status: "Active",
-    },
-    {
-      Id: 10,
-      ISIN: "US2345678901",
-      CUSIN: "CUS234567890",
-      Issuer: "UVW Holdings",
-      maturityDate: "2024-09-15",
-      coupon: 4.5,
-      type: "Municipal",
-      faceValue: 1800,
-      status: "Active",
-    },
-  ];
-  const [orgRows, setRows] = useState(dummyBonds);
+function Bonds({ bonds, setbondList }) {
+  
   const [filter, setFilter] = useState(false);
   const [selectedBonds, setselectedBonds] = useState([]);
   const columns = React.useMemo(
     () => [
-      { Header: "Id", accessor: "Id" },
-      { Header: "ISIN", accessor: "ISIN" },
-      { Header: "CUSIN", accessor: "CUSIN" },
-      { Header: "Issuer", accessor: "Issuer" },
+      { Header: "Id", accessor: "id" },
+      { Header: "ISIN", accessor: "isin" },
+      { Header: "CUSIP", accessor: "cusip" },
+      { Header: "Issuer", accessor: "issuer" },
       { Header: "Maturity Date", accessor: "maturityDate" },
       { Header: "Coupon", accessor: "coupon" },
-      { Header: "Type", accessor: "type" },
+      { Header: "Type", accessor: "securityType" },
       { Header: "Face Value", accessor: "faceValue" },
-      { Header: "Status", accessor: "status" },
+      { Header: "Status", accessor: "securityStatus" },
     ],
     []
   );
 
-  const data = React.useMemo(() => dummyBonds, []);
+  const data = React.useMemo(() => bonds, []);
 
   const {
     getTableProps,
@@ -211,7 +99,7 @@ function Bonds({ setbondList }) {
   );
 
   return (
-    <div className="pt-4 overflow-x-auto px-2 space-y-2">
+    <div className="pt-4 overflow-x-auto px-2 space-y-2 h-[40rem]">
       <div className="flex space-x-2">
         {filter ? (
           <input
@@ -237,8 +125,8 @@ function Bonds({ setbondList }) {
               let newBondList = bondList;
               selectedBonds.forEach((selectedBond) => {
                 const index = newBondList.indexOf(selectedBond);
-                console.log(newBondList); 
-                console.log(selectedBond)
+                console.log(newBondList);
+                console.log(selectedBond);
                 if (index === -1) {
                   newBondList.push(selectedBond);
                 }
@@ -249,15 +137,11 @@ function Bonds({ setbondList }) {
         >
           Track bonds
         </button>
-        <button
-            className="btn btn-outline btn-success"
-          >
-            Trade bonds
-          </button>
+        <button className="btn btn-outline btn-success">Trade bonds</button>
       </div>
       {filter ? (
         <table {...getTableProps()} className="table">
-          <thead>
+          <thead className="sticky top-0 bg-white">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 <th></th>
@@ -269,7 +153,7 @@ function Bonds({ setbondList }) {
               </tr>
             ))}
           </thead>
-          <tbody {...getTableBodyProps()}>
+          <tbody className="overflow-y-scroll" {...getTableBodyProps()}>
             {rows.map((row, index) => {
               prepareRow(row);
               return (
@@ -282,12 +166,12 @@ function Bonds({ setbondList }) {
                         onChange={() => {
                           setselectedBonds((bondList) => {
                             const index = bondList.indexOf(
-                              dummyBonds.find((b) => b.Id === row.values.Id) 
+                              bonds.find((b) => b.Id === row.values.Id)
                             );
                             if (index === -1) {
                               return [
                                 ...bondList,
-                                dummyBonds.find((b) => b.Id === row.values.Id),
+                                bonds.find((b) => b.Id === row.values.Id),
                               ];
                             } else {
                               bondList.splice(index, 1);
@@ -309,7 +193,7 @@ function Bonds({ setbondList }) {
           </tbody>
         </table>
       ) : (
-        <OriginalTable rows={orgRows} setselectedBonds={setselectedBonds} />
+        <OriginalTable rows={bonds} setselectedBonds={setselectedBonds} />
       )}
     </div>
   );
