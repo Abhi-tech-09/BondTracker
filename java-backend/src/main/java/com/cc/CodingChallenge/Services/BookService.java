@@ -29,5 +29,9 @@ import java.util.List;
 	  return bookUserRepository.findById(userName)
 			    .orElseThrow(() ->new RuntimeException("Resource with "+userName +" Not Present")).bookList;
   }
+    public static void addBookForUser(Book book, String userName) {
+        bookUserRepository.findById(userName)
+                .orElseThrow(() ->new RuntimeException("Resource with "+userName +" Not Present")).bookList.add(book);
+    }
 
  }
