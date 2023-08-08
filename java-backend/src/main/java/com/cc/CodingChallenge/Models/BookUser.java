@@ -13,6 +13,7 @@ public class BookUser {
     @Id
     public String userName;
 
+    public String name;
     public String password;
 
     public Constants.Role role;
