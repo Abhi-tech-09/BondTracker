@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("user")
+@CrossOrigin(origins = "http://localhost:3000")
 //TODO Create bookUserService
 public class BookUserController {
     @Autowired

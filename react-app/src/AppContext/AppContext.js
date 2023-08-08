@@ -7,7 +7,7 @@ export const AppProvider = ({ children }) => {
     userId: "1001",
     name: "Abhishek",
     email: "abhisharma09@gmail.com",
-    role: "admin",
+    role: "ROLE_ADMIN",
   });
   const login = (email, password) => {
     // This is where I will send the data to backend and will get the complete user data

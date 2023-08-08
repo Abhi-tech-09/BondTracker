@@ -11,10 +11,9 @@ import javax.servlet.http.HttpSession;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HttpSession session = request.getSession(false); // Don't create session if not exists
+        HttpSession session = request.getSession(true);
 
         if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect("/login"); // Redirect to login page if not logged in
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }
