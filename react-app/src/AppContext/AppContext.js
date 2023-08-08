@@ -4,10 +4,12 @@ const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const [user, setUser] = useState({
+
     userId: "",
     name: "",
     role: "",
     bookList:[]
+
   });
   const login = (email, password) => {
     // This is where I will send the data to backend and will get the complete user data

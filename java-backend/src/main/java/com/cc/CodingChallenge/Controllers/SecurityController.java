@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("security")
+@CrossOrigin(origins = "http://localhost:3000")
 public class SecurityController {
     @Autowired
     SecurityService securityService;

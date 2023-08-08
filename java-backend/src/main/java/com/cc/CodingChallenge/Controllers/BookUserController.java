@@ -19,6 +19,7 @@ import static com.cc.CodingChallenge.Utils.Constants.Role.ROLE_USER;
 
 @RestController
 @RequestMapping("user")
+@CrossOrigin(origins = "http://localhost:3000")
 
 //TODO Create bookUserService
 public class BookUserController {

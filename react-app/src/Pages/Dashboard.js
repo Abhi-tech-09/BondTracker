@@ -15,11 +15,19 @@ function Dashboard() {
       axios.defaults.withCredentials = true;
       //below piece of code is to test until login module is integrated
       //this should be removed
+
       // const login = await axios.post('http://localhost:8080/user/login',{
       //   userName: "user1",
       //   password: "password"
       // })
       // console.log(login)
+
+      const login = await axios.post('http://localhost:8080/user/login',{
+        userName: "user1",
+        password: "password"
+      })
+      console.log(login)
+
       const booksData = await axios.get('http://localhost:8080/book/books').catch((error)=>{
         if(error.response && error.response.status == 401){
           console.log("Please Login...")
@@ -50,7 +58,11 @@ function Dashboard() {
         <>
           <div className="flex">
             <div className="space-y-4 space-x-2 mx-3 p-4">
-            {bookRes?.map((book, idx) => (
+
+ 
+
+            {bookRes.map((book, idx) => (
+
               <div className="indicator">
                 <span className="indicator-item badge badge-error">?</span>
                 <div className="stats shadow cursor-pointer hover:bg-gray-50" onClick={() => navigate(`/book/${book.id}`)}>
@@ -68,7 +80,9 @@ function Dashboard() {
             ))}
             </div>
             {user.role=="ROLE_ADMIN"&&<div className="space-y-4 space-x-2 mx-3 p-4">
-            {userRes?.map((user, idx) => (
+
+            {userRes.map((user, idx) => (
+
               <div className="indicator">
                 <span className="indicator-item badge badge-error">?</span>
                 <div className="stats shadow cursor-pointer hover:bg-gray-50">
