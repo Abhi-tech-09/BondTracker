@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static com.cc.CodingChallenge.Utils.Constants.Role.ROLE_USER;
 
 @RestController
 @RequestMapping("user")
@@ -22,20 +25,22 @@ public class BookUserController {
     @Autowired
     BookUserRepository bookUserRepository;
 
+
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody BookUser bookUser, HttpSession httpSession){
+    public ResponseEntity<BookUser> login(@RequestBody BookUser bookUser, HttpSession httpSession){
         Optional<BookUser> bookUserOptional = bookUserRepository.findById(bookUser.userName);
         if(bookUserOptional.isEmpty()){
-            return new ResponseEntity<>("No User found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new BookUser(), HttpStatus.NOT_FOUND);
         }
         BookUser bookUserObj = bookUserOptional.get();
         if(Objects.equals(bookUserObj.password, bookUser.password)){
             httpSession.setAttribute("user", bookUserObj);
-            return new ResponseEntity<>("Login Successful", HttpStatus.OK);
+            bookUserObj.password = "********";
+            return new ResponseEntity<>(bookUserObj, HttpStatus.OK);
         }
         httpSession.setAttribute("user",null);
         httpSession.invalidate();
-        return new ResponseEntity<>("Invalid Credentials", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new BookUser(), HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/users")
@@ -49,6 +54,7 @@ public class BookUserController {
     }
     
     @GetMapping("/users/{userName}")
+
     public ResponseEntity<BookUser> getUserById(@PathVariable("userName") String userName) {
     	 Optional<BookUser> bookUserOptional = bookUserRepository.findById(userName);
          if(bookUserOptional.isEmpty()){
