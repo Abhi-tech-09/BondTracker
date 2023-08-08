@@ -1,6 +1,7 @@
 package com.cc.CodingChallenge.Controllers;
 
 import com.cc.CodingChallenge.Models.BookUser;
+import com.cc.CodingChallenge.Models.Security;
 import com.cc.CodingChallenge.Repositories.BookUserRepository;
 import com.cc.CodingChallenge.Utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,17 @@ public class BookUserController {
         }
         return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
     }
+    
+    @GetMapping("/users/{userName}")
+    public ResponseEntity<BookUser> getUserById(@PathVariable("userName") String userName) {
+    	 Optional<BookUser> bookUserOptional = bookUserRepository.findById(userName);
+         if(bookUserOptional.isEmpty()){
+             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+         }
+         BookUser bookUserObj = bookUserOptional.get();
+         
+         return new ResponseEntity<>(bookUserObj, HttpStatus.OK);
+    }
+    
 
 }

@@ -14,7 +14,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false); // Don't create session if not exists
 
         if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect("/login"); // Redirect to login page if not logged in
+//            response.sendRedirect("/user/login"); // Redirect to login page if not logged in
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }
