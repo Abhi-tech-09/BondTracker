@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("book")
 @CrossOrigin(origins = "*")
 public class BookController{
     @GetMapping("/books")
