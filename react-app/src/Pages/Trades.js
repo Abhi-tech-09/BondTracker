@@ -8,7 +8,7 @@ function Trades({ setBonds }) {
       CounterpartyId: 201,
       SecurityId: 301,
       Quantity: 100,
-      Status: "Pending",
+      Status: "Unsettled",
       Price: 50.75,
       Buy_sell: "Buy",
       tradeDate: "2023-08-04",
@@ -30,7 +30,7 @@ function Trades({ setBonds }) {
       CounterpartyId: 202,
       SecurityId: 302,
       Quantity: 50,
-      Status: "Completed",
+      Status: "Settled",
       Price: 75.25,
       Buy_sell: "Sell",
       tradeDate: "2023-08-05",
@@ -52,7 +52,7 @@ function Trades({ setBonds }) {
       CounterpartyId: 203,
       SecurityId: 303,
       Quantity: 200,
-      Status: "Pending",
+      Status: "Settled",
       Price: 30.5,
       Buy_sell: "Buy",
       tradeDate: "2023-08-06",
@@ -74,7 +74,7 @@ function Trades({ setBonds }) {
       CounterpartyId: 204,
       SecurityId: 304,
       Quantity: 150,
-      Status: "Completed",
+      Status: "Pending",
       Price: 60.0,
       Buy_sell: "Sell",
       tradeDate: "2023-08-07",
@@ -96,7 +96,7 @@ function Trades({ setBonds }) {
       CounterpartyId: 205,
       SecurityId: 305,
       Quantity: 75,
-      Status: "Pending",
+      Status: "Rejected",
       Price: 45.25,
       Buy_sell: "Buy",
       tradeDate: "2023-08-08",
@@ -118,7 +118,7 @@ function Trades({ setBonds }) {
       CounterpartyId: 206,
       SecurityId: 306,
       Quantity: 300,
-      Status: "Completed",
+      Status: "Settled",
       Price: 55.75,
       Buy_sell: "Sell",
       tradeDate: "2023-08-09",
@@ -162,7 +162,7 @@ function Trades({ setBonds }) {
       CounterpartyId: 208,
       SecurityId: 308,
       Quantity: 120,
-      Status: "Completed",
+      Status: "Unsettled",
       Price: 70.25,
       Buy_sell: "Sell",
       tradeDate: "2023-08-11",
@@ -184,7 +184,7 @@ function Trades({ setBonds }) {
       CounterpartyId: 209,
       SecurityId: 309,
       Quantity: 180,
-      Status: "Pending",
+      Status: "Settled",
       Price: 65.75,
       Buy_sell: "Buy",
       tradeDate: "2023-08-12",
@@ -206,7 +206,7 @@ function Trades({ setBonds }) {
       CounterpartyId: 210,
       SecurityId: 310,
       Quantity: 90,
-      Status: "Completed",
+      Status: "Rejected",
       Price: 80.0,
       Buy_sell: "Sell",
       tradeDate: "2023-08-13",
@@ -226,16 +226,50 @@ function Trades({ setBonds }) {
   const [trades, setTrades] = useState(dummyTrades);
   const [select, setSelect] = useState(-1);
   return (
-    <div className="container py-6">
-      <button className="btn btn-outline btn-info mx-6 my-2" onClick={() => 
-        setTrades([...dummyTrades.sort((a, b) => new Date(b.tradeDate) - new Date(a.tradeDate))])
-      }>
-        Show Recent Trades
-      </button>
-      <div className="overflow-x-auto mx-6">
-        <table className="table table-zebra">
-          <thead>
+    <div className="container pt-4 border h-[40rem]">
+      <div className="space-x-2 flex mx-6">
+        <button
+          className="btn btn-outline btn-info"
+          onClick={() =>
+            setTrades([
+              ...dummyTrades.sort(
+                (a, b) => new Date(b.tradeDate) - new Date(a.tradeDate)
+              ),
+            ])
+          }
+        >
+          Show Recent Trades
+        </button>
+        <button
+          className="btn btn-success mx-6 mb-2"
+          onClick={() =>
+            setTrades([
+              ...dummyTrades.sort(
+                (a, b) => new Date(b.tradeDate) - new Date(a.tradeDate)
+              ),
+            ])
+          }
+        >
+          Settle
+        </button>
+        <button
+          className="btn btn-error mx-6 mb-2"
+          onClick={() =>
+            setTrades([
+              ...dummyTrades.sort(
+                (a, b) => new Date(b.tradeDate) - new Date(a.tradeDate)
+              ),
+            ])
+          }
+        >
+          Reject
+        </button>
+      </div>
+      <div className="overflow-x-auto overflow-y-scroll mx-6 h-5/6">
+        <table className="table">
+          <thead className="sticky top-0 bg-white">
             <tr>
+              <th></th>
               <th>Id</th>
               <th>CounterpartyId</th>
               <th>SecurityId</th>
@@ -246,12 +280,50 @@ function Trades({ setBonds }) {
                   <option disabled selected>
                     select status
                   </option>
-                  <option onClick={() => {
-                    setTrades(dummyTrades.filter(trade => trade.Status === "Pending"))
-                  }}>Pending</option>
-                  <option onClick={() => {
-                    setTrades(dummyTrades.filter(trade => trade.Status === "Completed"))}
-                  }>Completed</option>
+                  <option
+                    onClick={() => {
+                      setTrades(
+                        dummyTrades.filter(
+                          (trade) => trade.Status === "Pending"
+                        )
+                      );
+                    }}
+                  >
+                    Pending
+                  </option>
+                  <option
+                    onClick={() => {
+                      setTrades(
+                        dummyTrades.filter(
+                          (trade) => trade.Status === "Settled"
+                        )
+                      );
+                    }}
+                  >
+                    Settled
+                  </option>
+                  <option
+                    onClick={() => {
+                      setTrades(
+                        dummyTrades.filter(
+                          (trade) => trade.Status === "Unsettled"
+                        )
+                      );
+                    }}
+                  >
+                    Unsettled
+                  </option>
+                  <option
+                    onClick={() => {
+                      setTrades(
+                        dummyTrades.filter(
+                          (trade) => trade.Status === "Rejected"
+                        )
+                      );
+                    }}
+                  >
+                    Rejected
+                  </option>
                   <option onClick={() => setTrades(dummyTrades)}>All</option>
                 </select>
               </th>
@@ -261,11 +333,11 @@ function Trades({ setBonds }) {
               <th>settlementDate</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="overflow-y-scroll">
             {trades.map((trade, index) => (
               <tr
                 key={trade.Id}
-                className={`hover:!bg-blue-200 ${
+                className={` hover:!bg-blue-200 ${
                   select === index ? "!bg-blue-200" : ""
                 }`}
                 onClick={() => {
@@ -273,11 +345,26 @@ function Trades({ setBonds }) {
                   setSelect(index);
                 }}
               >
+                <th>
+                  <label>
+                    <input type="checkbox" className="checkbox" />
+                  </label>
+                </th>
                 <th>{trade.Id}</th>
                 <td>{trade.CounterpartyId}</td>
                 <td>{trade.SecurityId}</td>
                 <td>{trade.Quantity}</td>
-                <td>{trade.Status}</td>
+                <td>
+                  <div
+                    className={`badge badge-outline ${
+                      trade.Status === "Settled" ? "badge-success" : ""
+                    } ${trade.Status === "Unsettled" ? "badge-warning" : ""} ${
+                      trade.Status === "Rejected" ? "badge-error" : ""
+                    }`}
+                  >
+                    {trade.Status}
+                  </div>
+                </td>
                 <td>{trade.Price}</td>
                 <td>{trade.Buy_sell}</td>
                 <td>{trade.tradeDate}</td>

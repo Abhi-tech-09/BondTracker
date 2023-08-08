@@ -3,7 +3,8 @@ package com.cc.CodingChallenge.Utils;
 
 public final class Constants {
     public static enum TradeStatus{
-        ACTIVE,
+        PENDING,
+        REJECTED,
         SETTLED,
         UNSETTLED
     }
