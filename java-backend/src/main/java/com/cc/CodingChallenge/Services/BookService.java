@@ -24,10 +24,10 @@ import java.util.List;
         return bookRepo.findAll();
     }
 
-    public static List<Book> findByUserId(String userName) {
+    public static Book findById(int id) {
 
-	  return bookUserRepository.findById(userName)
-			    .orElseThrow(() ->new RuntimeException("Resource with "+userName +" Not Present")).bookList;
+	  return bookRepo.findById(id)
+			    .orElseThrow(() ->new RuntimeException("Resource with "+id +" Not Present"));
   }
 
  }
