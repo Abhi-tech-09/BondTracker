@@ -12,12 +12,14 @@ const LoginForm = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const { user, setUser} = useAppContext();
+
   const handleLogin = async () => {
     // Perform authentication logic here
     // For simplicity, just calling the login function from context
       const userDetail = {userName,password}
       let response
       try {
+        axios.defaults.withCredentials = true;
         response = await axios.post(users_login_url+"login",userDetail);
         console.log(response.data)
         await setUser({
