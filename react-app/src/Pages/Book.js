@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Trades from "./Trades";
 import Bonds from "./Bonds";
 import axios from "axios";
+import TradeForm from "./TradeForm";
 
 const dummyBonds = [
   {
@@ -29,7 +30,45 @@ const dummyBonds = [
   },
 ];
 
-const TrackBonds = ({ bonds }) => {
+const TrackBonds = ({ bonds, setTrades }) => {
+  const [counterPartyId, setCounterPartyId] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
+  const [tradeDate, setTradeDate] = useState("");
+  const [settlementDate, setSettlementDate] = useState("");
+
+  const handleSubmit1 = (bond) => {
+    setTrades((trades) => [
+      ...trades,
+      {
+        id: Math.floor(Math.random() * 100),
+        counterParty: { id: counterPartyId },
+        quantity: quantity,
+        tradeStatus: "Pending",
+        price: price,
+        tradeDate: tradeDate,
+        settlementDate: settlementDate,
+        security: bond,
+        buySell: "Buy",
+      },
+    ]);
+  };
+  const handleSubmit2 = (bond) => {
+    setTrades((trades) => [
+      ...trades,
+      {
+        id: Math.floor(Math.random() * 100),
+        counterParty: { id: counterPartyId },
+        quantity: quantity,
+        tradeStatus: "Pending",
+        price: price,
+        tradeDate: tradeDate,
+        settlementDate: settlementDate,
+        security: bond,
+        buySell: "Sell",
+      },
+    ]);
+  };
   return (
     <>
       <h1 className="text-2xl mb-4">Your Bond Track list</h1>
@@ -59,13 +98,97 @@ const TrackBonds = ({ bonds }) => {
                   </button>
                   <dialog id="my_modal_1" className="modal">
                     <form method="dialog" className="modal-box">
-                      <h3 className="font-bold text-lg">Hello!</h3>
-                      <p className="py-4">
-                        Press ESC key or click the button below to close
-                      </p>
+                      <div>
+                        <h2 className="text-2xl bolder mb-2">Trade Form</h2>
+                        <form>
+                          <label>
+                            CounterParty ID: &nbsp;
+                            <input
+                              className="border"
+                              type="text"
+                              value={counterPartyId}
+                              onChange={(e) =>
+                                setCounterPartyId(e.target.value)
+                              }
+                            />
+                          </label>
+                          <br />
+                          <br />
+                          <label>
+                            Quantity: &nbsp;
+                            <input
+                              className="border"
+                              type="number"
+                              value={quantity}
+                              onChange={(e) => setQuantity(e.target.value)}
+                            />
+                          </label>
+                          <br />
+                          <br />
+                          <label>
+                            Price: &nbsp;
+                            <input
+                              className="border"
+                              type="number"
+                              value={price}
+                              onChange={(e) => setPrice(e.target.value)}
+                            />
+                          </label>
+                          <br />
+                          <br />
+                          <label>
+                            Trade Date: &nbsp;
+                            <input
+                              type="date"
+                              value={tradeDate}
+                              className="border"
+                              onChange={(e) => setTradeDate(e.target.value)}
+                            />
+                          </label>
+                          <br />
+                          <br />
+                          <label>
+                            Settlement Date: &nbsp;
+                            <input
+                              type="date"
+                              value={settlementDate}
+                              className="border"
+                              onChange={(e) =>
+                                setSettlementDate(e.target.value)
+                              }
+                            />
+                          </label>
+                          <br />
+                          <br />
+                          {/* <label>
+          Trade Type:
+          <select value={tradeType} onChange={handleTradeTypeChange}>
+            <option value="buy">Buy</option>
+            <option value="sell">Sell</option>
+          </select>
+        </label>
+        <br />
+        <button type="submit">Submit</button> */}
+                        </form>
+                      </div>
                       <div className="modal-action">
                         {/* if there is a button in form, it will close the modal */}
-                        <button className="btn">Close</button>
+                        <button
+                          onClick={(e) => {
+                            handleSubmit1(bond);
+                          }}
+                          className="btn btn-outline"
+                        >
+                          Buy
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            handleSubmit2(bond);
+                          }}
+                          className="btn btn-success"
+                        >
+                          Sell
+                        </button>
                       </div>
                     </form>
                   </dialog>
@@ -193,7 +316,7 @@ const dummyTrades = [
   {
     id: 1,
     BookId: 101,
-     counterParty: {id: 201},
+    counterParty: { id: 201 },
     SecurityId: 301,
     quantity: 100,
     tradeStatus: "Unsettled",
@@ -215,7 +338,7 @@ const dummyTrades = [
   {
     id: 2,
     BookId: 102,
-     counterParty: {id: 202},
+    counterParty: { id: 202 },
     SecurityId: 302,
     quantity: 50,
     tradeStatus: "Settled",
@@ -237,7 +360,7 @@ const dummyTrades = [
   {
     id: 3,
     BookId: 103,
-     counterParty: {id: 203},
+    counterParty: { id: 203 },
     SecurityId: 303,
     quantity: 200,
     tradeStatus: "Settled",
@@ -259,7 +382,7 @@ const dummyTrades = [
   {
     id: 4,
     BookId: 101,
-     counterParty: {id: 204},
+    counterParty: { id: 204 },
     SecurityId: 304,
     quantity: 150,
     tradeStatus: "Pending",
@@ -281,7 +404,7 @@ const dummyTrades = [
   {
     id: 5,
     BookId: 102,
-     counterParty: {id: 205},
+    counterParty: { id: 205 },
     SecurityId: 305,
     quantity: 75,
     tradeStatus: "Rejected",
@@ -303,7 +426,7 @@ const dummyTrades = [
   {
     id: 6,
     BookId: 103,
-     counterParty: {id: 206},
+    counterParty: { id: 206 },
     SecurityId: 306,
     quantity: 300,
     tradeStatus: "Settled",
@@ -325,7 +448,7 @@ const dummyTrades = [
   {
     id: 7,
     BookId: 101,
-     counterParty: {id: 207},
+    counterParty: { id: 207 },
     SecurityId: 307,
     quantity: 250,
     tradeStatus: "Pending",
@@ -347,7 +470,7 @@ const dummyTrades = [
   {
     id: 8,
     BookId: 102,
-     counterParty: {id: 208},
+    counterParty: { id: 208 },
     SecurityId: 308,
     quantity: 120,
     tradeStatus: "Unsettled",
@@ -369,7 +492,7 @@ const dummyTrades = [
   {
     id: 9,
     BookId: 103,
-     counterParty: {id: 209},
+    counterParty: { id: 209 },
     SecurityId: 309,
     quantity: 180,
     tradeStatus: "Settled",
@@ -391,7 +514,7 @@ const dummyTrades = [
   {
     id: 10,
     BookId: 101,
-     counterParty: {id: 210},
+    counterParty: { id: 210 },
     SecurityId: 310,
     quantity: 90,
     tradeStatus: "Rejected",
@@ -534,7 +657,7 @@ function Book() {
             </div>
           )
         ) : (
-          <TrackBonds bonds={bondList} />
+          <TrackBonds bonds={bondList} setTrades={setTrades} />
         )}
       </div>
     </div>

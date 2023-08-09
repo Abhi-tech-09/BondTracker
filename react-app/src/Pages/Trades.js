@@ -118,7 +118,7 @@ function Trades({ trades, setBonds }) {
                 key={trade.id}
                 className={` hover:!bg-blue-200 ${
                   select === index ? "!bg-blue-200" : ""
-                }`}
+                } ${ trade.tradeStatus === "Unsettled" ? "border-l-8 border-l-red-400" : ""}`}
                 onClick={() => {
                   setBonds({...trade.security, tradeId: trade.id});
                   setSelect(index);
