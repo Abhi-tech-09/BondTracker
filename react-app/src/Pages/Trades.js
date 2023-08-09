@@ -63,7 +63,7 @@ function Trades({ trades, setBonds }) {
                     onClick={() => {
                       setTradeList(
                         trades.filter(
-                          (trade) => trade.Status === "Pending"
+                          (trade) =>  trade.tradeStatus === "Pending"
                         )
                       );
                     }}
@@ -74,7 +74,7 @@ function Trades({ trades, setBonds }) {
                     onClick={() => {
                       setTradeList(
                         trades.filter(
-                          (trade) => trade.Status === "Settled"
+                          (trade) =>  trade.tradeStatus === "Settled"
                         )
                       );
                     }}
@@ -85,7 +85,7 @@ function Trades({ trades, setBonds }) {
                     onClick={() => {
                       setTradeList(
                         trades.filter(
-                          (trade) => trade.Status === "Unsettled"
+                          (trade) =>  trade.tradeStatus === "Unsettled"
                         )
                       );
                     }}
@@ -96,7 +96,7 @@ function Trades({ trades, setBonds }) {
                     onClick={() => {
                       setTradeList(
                         trades.filter(
-                          (trade) => trade.Status === "Rejected"
+                          (trade) =>  trade.tradeStatus === "Rejected"
                         )
                       );
                     }}
@@ -115,12 +115,12 @@ function Trades({ trades, setBonds }) {
           <tbody className="overflow-y-scroll">
             {tradeList.map((trade, index) => (
               <tr
-                key={trade.Id}
+                key={trade.id}
                 className={` hover:!bg-blue-200 ${
                   select === index ? "!bg-blue-200" : ""
                 }`}
                 onClick={() => {
-                  setBonds(trade.bondDetail);
+                  setBonds({...trade.security, tradeId: trade.id});
                   setSelect(index);
                 }}
               >
@@ -129,23 +129,23 @@ function Trades({ trades, setBonds }) {
                     <input type="checkbox" className="checkbox" />
                   </label>
                 </th>
-                <th>{trade.Id}</th>
-                <td>{trade.CounterpartyId}</td>
-                <td>{trade.SecurityId}</td>
-                <td>{trade.Quantity}</td>
+                <th>{trade.id}</th>
+                <td>{trade.counterParty?.id}</td>
+                <td>{trade.security?.id || trade.SecurityId}</td>
+                <td>{trade.quantity}</td>
                 <td>
                   <div
                     className={`badge badge-outline ${
-                      trade.Status === "Settled" ? "badge-success" : ""
-                    } ${trade.Status === "Unsettled" ? "badge-warning" : ""} ${
-                      trade.Status === "Rejected" ? "badge-error" : ""
+                       trade.tradeStatus === "Settled" ? "badge-success" : ""
+                    } ${ trade.tradeStatus === "Unsettled" ? "badge-warning" : ""} ${
+                       trade.tradeStatus === "Rejected" ? "badge-error" : ""
                     }`}
                   >
-                    {trade.Status}
+                    {trade.tradeStatus}
                   </div>
                 </td>
-                <td>{trade.Price}</td>
-                <td>{trade.Buy_sell}</td>
+                <td>{trade.price}</td>
+                <td>{trade.buySell}</td>
                 <td>{trade.tradeDate}</td>
                 <td>{trade.settlementDate}</td>
               </tr>
